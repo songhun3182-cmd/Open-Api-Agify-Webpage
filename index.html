@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>GitHub 프로필 자동 로딩</title>
+  <style>
+    body { font-family: Arial; padding: 40px; background: #f4f4f4; }
+    .card { background: white; padding: 30px; border-radius: 12px; width: 380px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    img { width: 120px; border-radius: 50%; }
+  </style>
+</head>
+<body>
+  <h2>GitHub 프로필 자동 로딩</h2>
+  <p>songhun3182의 GitHub 프로필을 자동으로 불러옵니다.</p>
+
+  <div class="card" id="profile">로딩 중...</div>
+
+  <script>
+    async function loadUser(username) {
+      const profile = document.getElementById('profile');
+      profile.innerHTML = '불러오는 중...';
+
+      const res = await fetch(`https://api.github.com/users/${username}`);
+      const data = await res.json();
+
+      profile.innerHTML = `
+        <img src="${data.avatar_url}" />
+        <h3>${data.name || '이름 없음'}</h3>
+        <p><b>GitHub ID:</b> ${data.login}</p>
+        <p><b>Public Repos:</b> ${data.public_repos}</p>
+        <p><b>Followers:</b> ${data.followers}</p>
+        <p><b>Following:</b> ${data.following}</p>
+        <p><a href="${data.html_url}" target="_blank">GitHub 방문하기</a></p>
+      `;
+    }
+
+    // 페이지 로드시 songhun3182 자동 로딩
+    window.onload = () => loadUser('songhun3182');
+  </script>
+</body>
+</html>
